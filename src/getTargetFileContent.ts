@@ -47,8 +47,6 @@ export async function getTargetFileContent(inputFilePath: string, sourceText: st
       ignoreNext: /<!--\s*?embedme[ -]ignore-next\s*?-->/g.test(start),
       commentEmbedOverrideFilepath: commentInsertion ? commentInsertion[1] : undefined,
     });
-    console.log('----------------------');
-    console.log(replacement);
 
     docPartials.push(start, replacement);
     previousEnd = codeFenceFinder.lastIndex;
@@ -212,7 +210,13 @@ async function getReplacement({
     return substr;
   }
 
-  console.log(`Embedded ${lines.length + ' lines'}${options.stripEmbedComment} from file ${commentedFilename}`);
+  console.error(
+    `Embedded ${lines.length + ' lines'}${
+      options.stripEmbedComment ? ' without comment line' : ''
+    } from file ${commentedFilename}`,
+  );
+
+  //console.log(`Embedded ${lines.length + ' lines'}${options.stripEmbedComment} from file ${commentedFilename}`);
 
   return replacement;
 }

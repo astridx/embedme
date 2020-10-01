@@ -1,35 +1,17 @@
 import test from 'ava';
 import { exec } from 'child_process';
-//import { copyFileSync, readFileSync } from 'fs';
+import { copyFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import * as util from 'util';
 
 const execAsync = util.promisify(exec);
 
-/*
 function stripCwd(str: string): string {
   return str.replace(new RegExp(process.cwd(), 'g'), '${cwd}');
 }
-*/
 
 test('it aborts on unrecognised flags', async t => {
   await t.throwsAsync(() => execAsync(`node dist/embedme.js test/fixtures/fixture.md --this-is-not-a-valid-flag`));
-});
-
-/*
-
-test('it embeds snippets into destination file with --stdout and does not edit the source', async t => {
-  const src = `test/fixtures/fixture-source.md`;
-  const dest = `test/fixtures/fixture.md`;
-  const before = readFileSync(src, 'utf8');
-
-  const { stderr } = await execAsync(`node dist/embedme.js ${src} --stdout > ${dest}`);
-
-  const after = readFileSync(src, 'utf8');
-  t.not(stderr, '');
-
-  t.is(before, after);
-
-  t.pass();
 });
 
 test('it edits the file in place, embedding code snippets', async t => {
@@ -46,14 +28,11 @@ test('it edits the file in place, embedding code snippets', async t => {
   t.is(after, fileContentSource);
   t.not(before, after);
 
-  // these assertions are expected to fail when output or supported files changes.
-  // run yarn test:update to update the snapshots. This is useful in code reviews
-  // to interpret what has changed in output.
   t.snapshot(after, 'File content does not match');
   t.snapshot(stripCwd(stdout), 'stdout does not match');
   t.snapshot(stderr, 'stderr does not match');
 });
-
+/*
 test('it does not change source file with --dry-run', async t => {
   const src = `test/fixtures/fixture-source.md`;
   const before = readFileSync(src, 'utf8');

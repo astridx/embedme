@@ -22,17 +22,6 @@ export async function getTargetFileContent(inputFilePath: string, sourceText: st
     const codeExtension = extensionMatch ? extensionMatch[1] : null;
     const splitFence = codeFence.split(lineEnding);
     const firstLine = splitFence.length >= 3 ? splitFence[1] : null;
-
-    const startLineNumber = (() => {
-      if (options.dryRun || options.stdout || options.verify) {
-        return getLineNumber(sourceText.substring(0, result.index), result.index, lineEnding);
-      }
-      const startingLineNumber = docPartials.join('').split(lineEnding).length - 1;
-      return (
-        startingLineNumber + getLineNumber(sourceText.substring(previousEnd, result.index), result.index, lineEnding)
-      );
-    })();
-
     const commentInsertion = start.match(/<!--\s*?embedme[ ]+?(\S+?)\s*?-->/);
 
     const replacement: string = await getReplacement({
@@ -43,7 +32,6 @@ export async function getTargetFileContent(inputFilePath: string, sourceText: st
       lineEnding,
       codeExtension: codeExtension as SupportedFileType,
       firstLine: firstLine || '',
-      startLineNumber,
       ignoreNext: /<!--\s*?embedme[ -]ignore-next\s*?-->/g.test(start),
       commentEmbedOverrideFilepath: commentInsertion ? commentInsertion[1] : undefined,
     });
@@ -63,7 +51,6 @@ async function getReplacement({
   lineEnding,
   codeExtension,
   firstLine,
-  startLineNumber,
   ignoreNext,
   commentEmbedOverrideFilepath,
 }: {
@@ -74,12 +61,9 @@ async function getReplacement({
   lineEnding: string;
   codeExtension: SupportedFileType;
   firstLine: string;
-  startLineNumber: number;
   ignoreNext: boolean;
   commentEmbedOverrideFilepath?: string;
 }) {
-  console.log('LineNumber: ' + startLineNumber);
-
   if (ignoreNext) {
     console.log(`"Ignore next" comment detected, skipping code block...`);
     return substr;
@@ -216,13 +200,7 @@ async function getReplacement({
     } from file ${commentedFilename}`,
   );
 
-  //console.log(`Embedded ${lines.length + ' lines'}${options.stripEmbedComment} from file ${commentedFilename}`);
-
   return replacement;
-}
-
-function getLineNumber(text: string, index: number, lineEnding: string): number {
-  return text.substring(0, index).split(lineEnding).length;
 }
 
 function detectLineEnding(sourceText: string): string {

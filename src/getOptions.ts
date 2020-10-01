@@ -23,7 +23,7 @@ export function getOptions() {
   } else if (options.dryRun) {
     console.log(`Doing a dry run...`);
   } else if (options.stdout) {
-    console.log(`Outputting to stdout...`);
+    //console.log(`Outputting to stdout...`);
   } else {
     console.log(`Embedding...`);
   }

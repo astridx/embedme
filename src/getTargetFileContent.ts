@@ -65,7 +65,6 @@ async function getReplacement({
   commentEmbedOverrideFilepath?: string;
 }) {
   if (ignoreNext) {
-    console.log(`"Ignore next" comment detected, skipping code block...`);
     return substr;
   }
 
@@ -74,32 +73,22 @@ async function getReplacement({
     commentedFilename = commentEmbedOverrideFilepath;
   } else {
     if (!codeExtension) {
-      console.log(`No code extension detected, skipping code block...`);
       return substr;
     }
 
     if (!firstLine) {
-      console.log(`Code block is empty & no preceding embedme comment, skipping...`);
       return substr;
     }
 
     const supportedFileTypes: SupportedFileType[] = Object.values(SupportedFileType).filter(x => typeof x === 'string');
 
     if (supportedFileTypes.indexOf(codeExtension) < 0) {
-      console.log(
-        `Unsupported file extension [${codeExtension}], supported extensions are ${supportedFileTypes.join(
-          ', ',
-        )}, skipping code block`,
-      );
       return substr;
     }
 
     const languageFamily: CommentFamily | null = lookupLanguageCommentFamily(codeExtension);
 
     if (languageFamily == null) {
-      console.log(
-        `File extension ${codeExtension} marked as supported, but comment family could not be determined. Please report this issue.`,
-      );
       return substr;
     }
 
@@ -107,20 +96,17 @@ async function getReplacement({
   }
 
   if (!commentedFilename) {
-    console.log(`No comment detected in first line for block with extension ${codeExtension}`);
     return substr;
   }
 
   const matches = commentedFilename.match(/\s?(\S+?)((#L(\d+)-L(\d+))|$)/m);
 
   if (!matches) {
-    console.log(`No file found in embed line`);
     return substr;
   }
 
   const [, filename, , lineNumbering, startLine, endLine] = matches;
   if (filename.includes('#')) {
-    console.log(`Incorrectly formatted line numbering string ${filename}, Expecting Github formatting e.g. #L10-L20`);
     return substr;
   }
 
@@ -166,9 +152,6 @@ async function getReplacement({
   const outputCode = lines.join(lineEnding);
 
   if (/```/.test(outputCode)) {
-    console.log(
-      `Output snippet for file ${filename} contains a code fence. Refusing to embed as that would break the document`,
-    );
     return substr;
   }
 
@@ -185,20 +168,12 @@ async function getReplacement({
   }
 
   if (replacement === substr) {
-    console.log(`No changes required, already up to date`);
     return substr;
   }
 
   if (replacement.slice(0, -3).trimRight() === substr.slice(0, -3).trimRight()) {
-    console.log(`Changes are trailing whitespace only, ignoring`);
     return substr;
   }
-
-  console.error(
-    `Embedded ${lines.length + ' lines'}${
-      options.stripEmbedComment ? ' without comment line' : ''
-    } from file ${commentedFilename}`,
-  );
 
   return replacement;
 }

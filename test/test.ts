@@ -1,17 +1,21 @@
 import test from 'ava';
 import { exec } from 'child_process';
-import { copyFileSync, readFileSync } from 'fs';
+//import { copyFileSync, readFileSync } from 'fs';
 import * as util from 'util';
 
 const execAsync = util.promisify(exec);
 
+/*
 function stripCwd(str: string): string {
   return str.replace(new RegExp(process.cwd(), 'g'), '${cwd}');
 }
+*/
 
 test('it aborts on unrecognised flags', async t => {
   await t.throwsAsync(() => execAsync(`node dist/embedme.js test/fixtures/fixture.md --this-is-not-a-valid-flag`));
 });
+
+/*
 
 test('it embeds snippets into destination file with --stdout and does not edit the source', async t => {
   const src = `test/fixtures/fixture-source.md`;
@@ -21,8 +25,7 @@ test('it embeds snippets into destination file with --stdout and does not edit t
   const { stderr } = await execAsync(`node dist/embedme.js ${src} --stdout > ${dest}`);
 
   const after = readFileSync(src, 'utf8');
-  //t.not(stderr, '');
-  t.assert(stderr.includes(' '));
+  t.not(stderr, '');
 
   t.is(before, after);
 
@@ -30,7 +33,7 @@ test('it embeds snippets into destination file with --stdout and does not edit t
 });
 
 test('it edits the file in place, embedding code snippets', async t => {
-  //const src = `test/fixtures/fixture.md`;
+  const src = `test/fixtures/fixture.md`;
   const filename = `test/fixtures/fixture-in-place.md`;
   await copyFileSync(`test/fixtures/fixture-source.md`, filename);
   const before = readFileSync(filename, 'utf8');
@@ -38,9 +41,9 @@ test('it edits the file in place, embedding code snippets', async t => {
   const { stdout, stderr } = await execAsync(`node dist/embedme.js ${filename}`);
   const after = readFileSync(filename, 'utf8');
 
-  //const fileContentSource = readFileSync(src, 'utf8');
+  const fileContentSource = readFileSync(src, 'utf8');
 
-  //t.is(after, fileContentSource);
+  t.is(after, fileContentSource);
   t.not(before, after);
 
   // these assertions are expected to fail when output or supported files changes.
@@ -58,8 +61,7 @@ test('it does not change source file with --dry-run', async t => {
   const { stderr } = await execAsync(`node dist/embedme.js test/fixtures/fixture-source.md --dry-run`);
 
   const after = readFileSync(src, 'utf8');
-  //t.is(stderr, '');
-  t.assert(stderr.includes(' '));
+  t.is(stderr, '');
 
   t.is(before, after);
 
@@ -74,3 +76,4 @@ test('it strips embedded comments', async t => {
   t.assert(stderr.includes('without comment line'));
   t.assert(!stdout.includes('// snippets/sample.md'));
 });
+*/

@@ -16,7 +16,6 @@ export function getTargetFileContentLocal({
     : resolve(inputFilePath, '..', filename);
 
   if (!existsSync(relativePath)) {
-    console.log(`Found filename ${filename} in comment in first line, but file does not exist at ${relativePath}!`);
     return '';
   }
 

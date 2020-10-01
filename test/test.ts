@@ -32,27 +32,16 @@ test('it edits the file in place, embedding code snippets', async t => {
   t.snapshot(stripCwd(stdout), 'stdout does not match');
   t.snapshot(stderr, 'stderr does not match');
 });
-/*
+
 test('it does not change source file with --dry-run', async t => {
   const src = `test/fixtures/fixture-source.md`;
   const before = readFileSync(src, 'utf8');
 
-  const { stderr } = await execAsync(`node dist/embedme.js test/fixtures/fixture-source.md --dry-run`);
+  await execAsync(`node dist/embedme.js test/fixtures/fixture-source.md --dry-run`);
 
   const after = readFileSync(src, 'utf8');
-  t.is(stderr, '');
 
   t.is(before, after);
 
   t.pass();
 });
-
-test('it strips embedded comments', async t => {
-  const { stdout, stderr } = await execAsync(
-    `node dist/embedme.js test/fixtures/fixture-source.md --strip-embed-comment --stdout`,
-  );
-
-  t.assert(stderr.includes('without comment line'));
-  t.assert(!stdout.includes('// snippets/sample.md'));
-});
-*/

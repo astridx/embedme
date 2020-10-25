@@ -205,6 +205,17 @@ PHP
 
 ```
 
+Remote PHP File
+
+```php
+// https://raw.githubusercontent.com/astridx/embedme/master/test/fixtures/snippets/sample.php
+
+<?php
+	echo 'Hello, World!';
+?>
+
+```
+
 C#
 
 ```cs
@@ -557,4 +568,10 @@ Ignored block
 
 ```json
 
+```
+
+Missing Remote PHP File
+
+```php
+// https://raw.githubusercontent.com/astridx/embedme/master/test/fixtures/snippets/this-file-does-not-exist.php
 ```

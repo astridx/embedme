@@ -260,13 +260,18 @@ TSX
 ```ts
 ```
 
-### Embed with comment and unknown file type
+### Embed with comment and unknown/unknown file type
 
 <!-- embedme snippets/sample.json -->
 
 ```{.json caption="Some JSON file"}
 
 ```
+
+```php {numberLines diff}
+// snippets/sample.php
+```
+
 
 ## Errors
 

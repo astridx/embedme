@@ -494,7 +494,7 @@ export function hello(): string {
 
 ```
 
-### Embed with comment and unknown file type
+### Embed with comment and unknown/unknown file type
 
 <!-- embedme snippets/sample.json -->
 
@@ -504,6 +504,16 @@ export function hello(): string {
 }
 
 ```
+
+```php {numberLines diff}
+// snippets/sample.php
+
+<?php
+	echo 'Hello, World!';
+?>
+
+```
+
 
 ## Errors
 

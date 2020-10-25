@@ -21,6 +21,24 @@ file. For example
     ```ts
     // example.ts
     ```
+or
+
+<!-- embedme-ignore-next -->
+
+    This is a *markdown* document with a code block:
+
+    ```js {numberLines}
+    // start.js
+    ```
+or 
+
+<!-- embedme-ignore-next -->
+
+    This is a *markdown* document with a code block:
+
+    ```js {numberLines: 21}
+    // start.js
+    ```
 
 Next, run the following
 
